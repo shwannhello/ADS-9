@@ -5,7 +5,8 @@
 #include <memory>
 #include <vector>
 
-PMTree::PMTree(const std::vector<char>& elements) : originalElements(elements) {
+PMTree::PMTree(const std::vector<char>& elements)
+    : originalElements(elements) {
   if (elements.empty()) {
     root = nullptr;
     return;
@@ -18,7 +19,8 @@ PMTree::PMTree(const std::vector<char>& elements) : originalElements(elements) {
   buildTree(root, sorted);
 }
 
-void PMTree::buildTree(std::shared_ptr<Node> node, std::vector<char> remaining) {
+void PMTree::buildTree(std::shared_ptr<Node> node,
+                       std::vector<char> remaining) {
   if (remaining.empty()) {
     return;
   }
@@ -85,7 +87,8 @@ void PMTree::collectPermsSequential(std::shared_ptr<Node> node,
   for (auto& child : node->children) {
     if (found) return;
     current.push_back(child->value);
-    collectPermsSequential(child, current, counter, target, targetPerm, found);
+    collectPermsSequential(child, current, counter, target,
+                           targetPerm, found);
     current.pop_back();
   }
 }
@@ -95,7 +98,8 @@ std::vector<char> getPerm1(PMTree& tree, int num) {
   if (!tree.root || num < 1) return result;
 
   int totalPerms = 1;
-  for (int i = 2; i <= static_cast<int>(tree.originalElements.size()); ++i) {
+  for (int i = 2; i <= static_cast<int>(tree.originalElements.size());
+       ++i) {
     totalPerms *= i;
   }
 
@@ -105,7 +109,8 @@ std::vector<char> getPerm1(PMTree& tree, int num) {
   std::vector<char> current;
   bool found = false;
 
-  tree.collectPermsSequential(tree.root, current, counter, num, result, found);
+  tree.collectPermsSequential(tree.root, current, counter, num,
+                              result, found);
 
   return result;
 }
@@ -135,8 +140,8 @@ void PMTree::findPermByPath(std::shared_ptr<Node> node,
     current.push_back(node->children[childIndex]->value);
     int newTarget = target - childIndex * permsPerChild;
     remaining--;
-    findPermByPath(node->children[childIndex], current, remaining, newTarget,
-                   result, found);
+    findPermByPath(node->children[childIndex], current, remaining,
+                   newTarget, result, found);
   }
 }
 
@@ -145,7 +150,8 @@ std::vector<char> getPerm2(PMTree& tree, int num) {
   if (!tree.root || num < 1) return result;
 
   int totalPerms = 1;
-  for (int i = 2; i <= static_cast<int>(tree.originalElements.size()); ++i) {
+  for (int i = 2; i <= static_cast<int>(tree.originalElements.size());
+       ++i) {
     totalPerms *= i;
   }
 
