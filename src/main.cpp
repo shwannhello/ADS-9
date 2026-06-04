@@ -1,4 +1,5 @@
 // Copyright 2022 NNTU-CS
+#include "../include/main.h"
 #include "../include/tree.h"
 
 #include <chrono>
