@@ -7,27 +7,26 @@
 #include <algorithm>
 
 class TreeNode {
-public:
+ public:
+    explicit TreeNode(char val) : value(val) {}
     char value;
     std::vector<std::shared_ptr<TreeNode>> children;
-    
-    TreeNode(char val) : value(val) {}
 };
 
 class PMTree {
-private:
+ private:
     std::shared_ptr<TreeNode> root;
     std::vector<char> originalElements;
-    
+
     void buildTree(std::shared_ptr<TreeNode> node, std::vector<char> remaining);
-    void getAllPermsRecursive(std::shared_ptr<TreeNode> node, 
-                              std::vector<char>& current, 
+    void getAllPermsRecursive(std::shared_ptr<TreeNode> node,
+                              std::vector<char>& current,
                               std::vector<std::vector<char>>& result);
-    
-public:
-    PMTree(const std::vector<char>& elements);
+
+ public:
+    explicit PMTree(const std::vector<char>& elements);
     ~PMTree() = default;
-    
+
     std::shared_ptr<TreeNode> getRoot() const { return root; }
     friend std::vector<std::vector<char>> getAllPerms(PMTree& tree);
     friend std::vector<char> getPerm1(PMTree& tree, int num);
@@ -41,5 +40,6 @@ std::vector<char> getPerm2(PMTree& tree, int num);
 
 // Вспомогательная функция для вычисления факториала
 int factorial(int n);
+
 
 #endif  // INCLUDE_TREE_H_
