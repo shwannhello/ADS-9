@@ -1,8 +1,8 @@
 // src/alg.cpp
 // Copyright 2024 <Student>
 
-#include "../include/alg.h"
-#include "../include/tree.h"
+#include "alg.h"
+#include "tree.h"
 
 #include <memory>
 #include <vector>
