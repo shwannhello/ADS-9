@@ -1,104 +1,141 @@
 // Copyright 2022 NNTU-CS
-#include <algorithm>
-#include <vector>
-#include  "tree.h"
+#include "tree.h"
+#include <iostream>
+#include <fstream>
+#include <locale>
+#include <cstdlib>
 
-PMTree::PMTree(const std::vector<char>& src) : base(src) {
-    top = new Node(0);
-
-    std::vector<char> sorted_src = src;
-    std::sort(sorted_src.begin(), sorted_src.end());
-
-    for (char ch : sorted_src) {
-        std::vector<char> leftover = sorted_src;
-        leftover.erase(std::find(leftover.begin(), leftover.end(), ch));
-        Node* child = generate(leftover);
-        child->sym = ch;
-        top->links.push_back(child);
-    }
+// Вычисление факториала
+int factorial(int n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
 }
 
-PMTree::~PMTree() {
-    destroy(top);
-}
-
-PMTree::Node* PMTree::generate(const std::vector<char>& rest) {
-    if (rest.empty()) return new Node(0);
-    Node* cur = new Node(0);
-    std::vector<char> sorted_rest = rest;
-    std::sort(sorted_rest.begin(), sorted_rest.end());
-    for (char ch : sorted_rest) {
-        std::vector<char> leftover = sorted_rest;
-        leftover.erase(std::find(leftover.begin(), leftover.end(), ch));
-        Node* child = generate(leftover);
-        child->sym = ch;
-        cur->links.push_back(child);
-    }
-    return cur;
-}
-
-void PMTree::destroy(Node* ptr) {
-    if (!ptr) return;
-    for (auto child : ptr->links) {
-        destroy(child);
-    }
-    delete ptr;
-}
-
-void traverse(PMTree::Node* cur, std::vector<char>& buf,
-    std::vector<std::vector<char>>& out, int level, int limit) {
-    if (level == limit) {
-        out.push_back(buf);
+// Конструктор дерева
+PMTree::PMTree(const std::vector<char>& elements) : originalElements(elements) {
+    if (elements.empty()) {
+        root = nullptr;
         return;
     }
-    for (auto nxt : cur->links) {
-        buf.push_back(nxt->sym);
-        traverse(nxt, buf, out, level + 1, limit);
-        buf.pop_back();
+    
+    root = std::make_shared<TreeNode>('\0'); // Корневой узел-заглушка
+    std::vector<char> sorted = elements;
+    std::sort(sorted.begin(), sorted.end());
+    buildTree(root, sorted);
+}
+
+// Построение дерева рекурсивно
+void PMTree::buildTree(std::shared_ptr<TreeNode> node, std::vector<char> remaining) {
+    if (remaining.empty()) {
+        return;
     }
-}
-
-std::vector<std::vector<char>> getAllPerms(PMTree& obj) {
-    std::vector<std::vector<char>> out;
-    std::vector<char> track;
-    int total = obj.base.size();
-    for (auto first : obj.top->links) {
-        track.push_back(first->sym);
-        traverse(first, track, out, 1, total);
-        track.pop_back();
-    }
-    return out;
-}
-
-std::vector<char> getPerm1(PMTree& obj, int pos) {
-    auto full = getAllPerms(obj);
-    if (pos <= 0 || pos > static_cast<int>(full.size())) return {};
-    return full[pos - 1];
-}
-
-size_t fact(int n) {
-    size_t res = 1;
-    for (int i = 2; i <= n; ++i) res *= i;
-    return res;
-}
-
-std::vector<char> getPerm2(PMTree& obj, int pos) {
-    int total = obj.base.size();
-    if (pos <= 0 || static_cast<size_t>(pos) > fact(total)) return {};
-
-    std::vector<char> result;
-    int remainder = pos - 1;
-    PMTree::Node* current = obj.top;
-
-    for (int step = 0; step < total; ++step) {
-        size_t block = fact(total - step - 1);
-        int idx = remainder / block;
-        remainder %= block;
-        if (idx >= static_cast<int>(current->links.size())) {
-            return {};
+    
+    // Создаем потомков для каждого оставшегося символа
+    for (size_t i = 0; i < remaining.size(); ++i) {
+        char val = remaining[i];
+        auto child = std::make_shared<TreeNode>(val);
+        node->children.push_back(child);
+        
+        // Создаем вектор оставшихся символов (исключая текущий)
+        std::vector<char> newRemaining;
+        for (size_t j = 0; j < remaining.size(); ++j) {
+            if (j != i) {
+                newRemaining.push_back(remaining[j]);
+            }
         }
-        current = current->links[idx];
-        result.push_back(current->sym);
+        
+        // Рекурсивно строим поддерево
+        buildTree(child, newRemaining);
     }
+}
+
+// Рекурсивный обход для получения всех перестановок
+void PMTree::getAllPermsRecursive(std::shared_ptr<TreeNode> node, 
+                                  std::vector<char>& current, 
+                                  std::vector<std::vector<char>>& result) {
+    if (!node || node->value == '\0') {
+        return;
+    }
+    
+    current.push_back(node->value);
+    
+    if (node->children.empty()) {
+        result.push_back(current);
+    } else {
+        // Обход детей слева направо для сохранения порядка по возрастанию
+        for (auto& child : node->children) {
+            getAllPermsRecursive(child, current, result);
+        }
+    }
+    
+    current.pop_back();
+}
+
+// Функция получения всех перестановок
+std::vector<std::vector<char>> getAllPerms(PMTree& tree) {
+    std::vector<std::vector<char>> result;
+    
+    if (!tree.getRoot() || tree.getRoot()->children.empty()) {
+        return result;
+    }
+    
+    std::vector<char> current;
+    
+    // Обходим всех детей корня
+    for (auto& child : tree.getRoot()->children) {
+        tree.getAllPermsRecursive(child, current, result);
+    }
+    
+    return result;
+}
+
+// Первый способ: предварительный обход всех предшествующих перестановок
+std::vector<char> getPerm1(PMTree& tree, int num) {
+    if (num < 1) return std::vector<char>();
+    
+    auto allPerms = getAllPerms(tree);
+    
+    if (num > static_cast<int>(allPerms.size())) {
+        return std::vector<char>();
+    }
+    
+    return allPerms[num - 1];
+}
+
+// Второй способ: прямая навигация по дереву
+std::vector<char> getPerm2(PMTree& tree, int num) {
+    if (num < 1) return std::vector<char>();
+    
+    std::vector<char> result;
+    auto currentNode = tree.getRoot();
+    
+    if (!currentNode || currentNode->children.empty()) {
+        return result;
+    }
+    
+    int remaining = num - 1; // переходим к 0-индексации
+    
+    // Пока не достигли листа
+    while (currentNode && !currentNode->children.empty()) {
+        size_t numChildren = currentNode->children.size();
+        
+        // Вычисляем размер поддерева для каждого потомка
+        int subTreeSize = factorial(static_cast<int>(numChildren - 1));
+        
+        // Определяем индекс нужного потомка
+        int childIndex = remaining / subTreeSize;
+        
+        if (childIndex >= static_cast<int>(numChildren)) {
+            return std::vector<char>(); // Некорректный номер
+        }
+        
+        // Переходим к выбранному потомку
+        currentNode = currentNode->children[childIndex];
+        result.push_back(currentNode->value);
+        
+        // Обновляем remaining для следующего уровня
+        remaining = remaining % subTreeSize;
+    }
+    
     return result;
 }
