@@ -1,4 +1,4 @@
-// Copyright 2022 NNTU-CS
+// include/tree.h
 // Copyright 2024 <Student>
 
 #ifndef INCLUDE_TREE_H_
