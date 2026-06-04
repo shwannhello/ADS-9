@@ -3,9 +3,11 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cstdlib>
 #include <iomanip>
 #include <iostream>
 #include <random>
+#include <string>
 #include <vector>
 
 // Функция для измерения времени выполнения
@@ -78,7 +80,7 @@ void runExperiment() {
     }
 
     std::cout << "\nПримечание: getPerm1 использует getAllPerms, "
-              << "поэтому их время выполнения相近о." << std::endl;
+              << "поэтому их время выполнения близко." << std::endl;
     std::cout << "getPerm2 работает значительно быстрее, "
               << "так как использует прямую навигацию по дереву."
               << std::endl;
