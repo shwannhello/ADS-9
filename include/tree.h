@@ -4,7 +4,6 @@
 
 #include <vector>
 #include <memory>
-#include <algorithm>
 
 class PMTree {
  private:
