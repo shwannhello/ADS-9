@@ -1,8 +1,8 @@
 // src/main.cpp
 // Copyright 2024 <Student>
 
-#include "../include/main.h"
-#include "../include/tree.h"
+#include "main.h"
+#include "tree.h"
 
 #include <chrono>
 #include <cstdint>
