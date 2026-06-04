@@ -1,4 +1,4 @@
-// Copyright 2022 NNTU-CS
+// src/main.cpp
 // Copyright 2024 <Student>
 
 #include "../include/main.h"
