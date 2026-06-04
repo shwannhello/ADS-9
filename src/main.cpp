@@ -1,15 +1,12 @@
-// src/main.cpp
-// Copyright 2024 <Student>
-
-#include "main.h"
-#include "tree.h"
-
+// Copyright 2022 NNTU-CS
+#include <algorithm>
 #include <chrono>
-#include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <random>
 #include <vector>
+
+#include "tree.h"
 
 using std::chrono::duration_cast;
 using std::chrono::high_resolution_clock;
