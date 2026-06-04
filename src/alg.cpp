@@ -1,4 +1,5 @@
 // Copyright 2022 NNTU-CS
+#include "../include/alg.h"
 #include "../include/tree.h"
 
 #include <algorithm>
