@@ -1,7 +1,7 @@
 // Copyright 2022 NNTU-CS
 #include  "tree.h"
+#include <cstdint>
 #include <algorithm>
-#include <cmath>
 #include <memory>
 #include <vector>
 
