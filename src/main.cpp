@@ -1,4 +1,6 @@
 // Copyright 2022 NNTU-CS
+// Copyright 2024 <Student>
+
 #include "../include/main.h"
 #include "../include/tree.h"
 
