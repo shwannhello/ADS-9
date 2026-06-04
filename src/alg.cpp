@@ -1,14 +1,11 @@
-// src/alg.cpp
-// Copyright 2024 <Student>
-
-#include "alg.h"
-#include "tree.h"
-
-#include <memory>
-#include <vector>
-
+// Copyright 2022 NNTU-CS
 #include <algorithm>
-#include <cstdint>
+#include  <iostream>
+#include  <fstream>
+#include  <locale>
+#include  <cstdlib>
+#include <vector>
+#include  "tree.h"
 
 PMTree::PMTree(const std::vector<char>& elements)
     : originalElements(elements) {
