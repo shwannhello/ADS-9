@@ -4,10 +4,11 @@
 #include "../include/alg.h"
 #include "../include/tree.h"
 
-#include <algorithm>
-#include <cstdint>
 #include <memory>
 #include <vector>
+
+#include <algorithm>
+#include <cstdint>
 
 PMTree::PMTree(const std::vector<char>& elements)
     : originalElements(elements) {
