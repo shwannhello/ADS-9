@@ -1,6 +1,7 @@
 // Copyright 2022 NNTU-CS
 #include "tree.h"
 #include <chrono>
+#include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <random>
@@ -32,7 +33,7 @@ void runExperiment(int n, std::ofstream& dataFile) {
   }
 
   std::cout << "Testing n = " << n << " (permutations: ";
-  long long perms = 1;
+  int64_t perms = 1;
   for (int i = 2; i <= n; ++i) perms *= i;
   std::cout << perms << ")" << std::endl;
 
