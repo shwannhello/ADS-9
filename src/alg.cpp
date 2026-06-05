@@ -1,10 +1,7 @@
 // Copyright 2022 NNTU-CS
-#include "tree.h"
-
 #include <algorithm>
-#include <cstdlib>
-#include <memory>
 #include <vector>
+#include  "tree.h"
 
 // Вычисление факториала
 int factorial(int n) {
