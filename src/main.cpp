@@ -4,11 +4,11 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <string>
+#include <algorithm>
 #include <locale>
 #include <random>
 #include <vector>
-#include <string>
-#include <algorithm>
 #include "tree.h"
 
 // Функция для измерения времени выполнения
