@@ -1,14 +1,13 @@
 // Copyright 2022 NNTU-CS
-#include "tree.h"
-
-#include <algorithm>
 #include <chrono>
 #include <cstdlib>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <locale>
 #include <random>
-#include <string>
 #include <vector>
+#include "tree.h"
 
 // Функция для измерения времени выполнения
 template<typename Func>
