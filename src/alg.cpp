@@ -1,6 +1,7 @@
 // Copyright 2022 NNTU-CS
 #include <algorithm>
 #include <vector>
+#include <memory>
 #include  "tree.h"
 
 // Вычисление факториала
